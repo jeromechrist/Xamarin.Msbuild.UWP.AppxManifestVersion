@@ -1,0 +1,65 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Example usage: msbuild someproject.csproj /p:AppVersion=1.2.3.4 -->
+
+  <Target Name="OverrideAppxVersion" BeforeTargets="CoreCompile">
+    <!-- CallTarget technique used to allow version properties to be set by another target -->
+    <CallTarget Targets="CoreOverrideAppxVersion"
+                Condition=" '$(AppVersion)'!='' " />
+  </Target>
+
+  <Target Name="CoreOverrideAppxVersion">
+
+    <PropertyGroup>
+      <AppxManifestRelativePath>package.appxmanifest</AppxManifestRelativePath>
+    </PropertyGroup>
+
+    <Error Condition="'$(AppVersion)'!='' and '$([System.Text.RegularExpressions.Regex]::IsMatch(&quot;$(AppVersion)&quot;,&quot;^\d+\.\d+\.\d+\.\d+$&quot;))' == false"
+           Text="AppVersion '$(AppVersion)' must be of the form 'n.n.n.n' where 'n' is a positive integer."/>
+
+    <Message Text="Setting assembly version to '$(AppVersion)'" Condition="'$(AppVersion)'!=''"/>
+
+    <UpdateAppxManifestVersion Version="$(AppVersion)" AppxManifestPath="$(AppxManifestRelativePath)" />
+
+    <ItemGroup>
+      <AppxManifest Remove="$(AppxManifestRelativePath)" />
+      <AppxManifest Include="$(AppxManifestRelativePath).versioned.appxmanifest" />
+      <FileWrites Include="$(AppxManifestRelativePath).versioned.appxmanifest" />
+    </ItemGroup>
+
+  </Target>
+
+  <UsingTask TaskName="UpdateAppxManifestVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <AppxManifestPath ParameterType="System.String" Required="true" />
+      <Version ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+
+    <Task>
+      <Reference Include="System.Xml" />
+      <Reference Include="System.Xml.Linq" />
+      <Using Namespace="System.Xml.Linq" />
+      <Using Namespace="System.IO" />
+      <Code Type="Fragment" Language="cs">
+<![CDATA[
+if (!File.Exists(AppxManifestPath)) {
+  Log.LogError(string.Format("The appxmanifest could not be located at path '{0}'", AppxManifestPath));
+  return false;
+}
+  
+var doc = XDocument.Load(AppxManifestPath);
+  
+XNamespace ns = "http://schemas.microsoft.com/appx/manifest/foundation/windows10";
+  
+var identity = doc.Element(ns + "Package").Descendants(ns + "Identity").First();
+  
+identity.Attribute("Version").Value = Version;
+  
+doc.Save(AppxManifestPath + ".versioned.appxmanifest");
+return true;
+]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  
+</Project>
