@@ -3,13 +3,16 @@
   <metadata>
     <id>Xamarin.Msbuild.UWP.AppxManifestVersion</id>
     <version>0.0.4</version>
+    <title>Xamarin.Msbuild.UWP.AppxManifestVersion</title>
     <authors>jerome.christ</authors>
     <owners>jerome.christ</owners>
+    <summary>Msbuild target to change the version in UWP package.appxmanifest file from AppVersion param in msbuild</summary>
     <licenseUrl>https://github.com/jeromechrist/Xamarin.Msbuild.UWP.AppxManifestVersion/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/jeromechrist/Xamarin.Msbuild.UWP.AppxManifestVersion</projectUrl>
+    <iconUrl>https://github.com/jeromechrist/Xamarin.Msbuild.UWP.AppxManifestVersion/blob/master/nugeticon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Msbuild target to change the version in UWP package.appxmanifest file from AppVersion param</description>
-    <releaseNotes>v0</releaseNotes>
+    <releaseNotes>Initial working release for UAP10.0</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>xamarin UWP UAP MSBuild package.appxmanifest appxmanifest</tags>
   </metadata>
