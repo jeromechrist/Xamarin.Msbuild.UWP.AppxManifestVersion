@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/sdvls2q8v671e0b8?svg=true)](https://ci.appveyor.com/project/jeromechrist/xamarin-msbuild-uwp-appxmanifestversion)
+
 # Xamarin.Msbuild.UWP.AppxManifestVersion
 
 forked from : [Readify/Xamarin.Msbuild](https://github.com/Readify/Xamarin.Msbuild)
