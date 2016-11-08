@@ -1,4 +1,5 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/sdvls2q8v671e0b8?svg=true)](https://ci.appveyor.com/project/jeromechrist/xamarin-msbuild-uwp-appxmanifestversion)
+[![NuGet](https://img.shields.io/nuget/v/Xamarin.Msbuild.UWP.AppxManifestVersion.svg)](https://www.nuget.org/packages/Xamarin.Msbuild.UWP.AppxManifestVersion/)
 
 # Xamarin.Msbuild.UWP.AppxManifestVersion
 
