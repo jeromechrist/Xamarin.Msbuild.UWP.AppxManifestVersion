@@ -20,6 +20,7 @@ Task("Clean")
     .Does(() =>
 {
     CleanDirectory(buildDir);
+    CleanDirectory(Directory("TestProject/TestProject/AppPackages"));
 });
 
 Task("Restore-NuGet-Packages")
@@ -37,7 +38,12 @@ Task("Build")
     {
       // Use MSBuild
       MSBuild("TestProject/TestProject.sln", settings =>
-        settings.SetConfiguration(configuration));
+        settings.SetConfiguration(configuration)
+        .WithProperty("AppVersion", "9.9.9.9")
+        .WithProperty("AppxBundle", "Never")
+        .WithProperty("UapAppxPackageBuildMode", "StoreOnly")
+        .WithProperty("BuildAppxUploadPackageForUap", "false")
+        );
     }
     else
     {
@@ -47,13 +53,23 @@ Task("Build")
     }
 });
 
+Task("AssertIsWorking")
+    .IsDependentOn("Build")
+    .Does(() =>
+{
+    if (!FileExists("TestProject/TestProject/AppPackages/TestProject_9.9.9.9_ARM_Test/TestProject_9.9.9.9_ARM.appx"))
+    {
+        throw new Exception("Sometehing went wrong: Appx with the AppVersion supplied not found");
+    }
+});
+
 
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("Build");
+    .IsDependentOn("AssertIsWorking");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
