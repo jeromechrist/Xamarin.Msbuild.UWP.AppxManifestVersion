@@ -59,7 +59,7 @@ Task("AssertIsWorking")
 {
     if (!FileExists("TestProject/TestProject/AppPackages/TestProject_9.9.9.9_ARM_Test/TestProject_9.9.9.9_ARM.appx"))
     {
-        throw new Exception("Sometehing went wrong: Appx with the AppVersion supplied not found");
+        throw new Exception("Something went wrong: Appx with the AppVersion supplied not found");
     }
 });
 
